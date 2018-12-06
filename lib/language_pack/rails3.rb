@@ -52,41 +52,6 @@ class LanguagePack::Rails3 < LanguagePack::Rails2
   def best_practice_warnings
     super
     warn_x_sendfile_use!
-
-    if assets_compile_enabled?
-      mcount("warn.assets.compile.true")
-
-      safe_sprockets_version_needed = sprocket_version_upgrade_needed
-      if safe_sprockets_version_needed
-        message = <<ERROR
-A security vulnerability has been detected in your application.
-To protect your application you must take action. Your application
-is currently exposing its credentials via an easy to exploit directory
-traversal.
-
-To protect your application you must either upgrade to Sprockets version "#{safe_sprockets_version_needed}"
-or disable dynamic compilation at runtime by setting:
-
-```
-config.assets.compile = false # Disables security vulnerability
-```
-
-To read more about this security vulnerability please refer to this blog post:
-  https://blog.heroku.com/rails-asset-pipeline-vulnerability
-
-ERROR
-        error(message)
-      end
-
-      warn(<<-WARNING)
-You set your `config.assets.compile = true` in production.
-This can negatively impact the performance of your application.
-
-For more information can be found in this article:
-  https://devcenter.heroku.com/articles/rails-asset-pipeline#compile-set-to-true-in-production
-
-WARNING
-    end
   end
 
 private
